@@ -81,10 +81,11 @@ or any paid services oyur wish
    - **Important:** Locate the Supabase configuration folder within the downloaded/cloned project and move it **outside** the virtual environment folder. Virtual environments are meant to isolate project dependencies, and Supabase configuration typically shouldn't be part of that isolation.
 
 4. **Install Required Packages and Create `.env` File:**
-
+    pip install -r requirements.txt
    - **Activate the virtual environment:**
      - **Windows:** Run `venv\Scripts\activate` in your terminal.
      - **macOS/Linux:** Run `source venv/bin/activate` in your terminal.
+     or use .\Trial\SupabaseTrial\Scripts\activate  
    - **Install dependencies:** Navigate to the project directory containing the `requirements.txt` file and run:
 
      ```bash
