@@ -1,0 +1,54 @@
+Tables:
+
+Users: (Unchanged)
+
+Columns:
+user_id (INT PRIMARY KEY) - Unique identifier for each user
+email (VARCHAR(255) UNIQUE) - User's email address (ensures uniqueness)
+
+
+Companies:  (Unchanged)
+Columns:
+company_id (INT PRIMARY KEY) - Unique identifier for each company
+company_name (VARCHAR(255)) - Name of the company
+
+
+
+User_Companies:  (Minor Update)
+Columns:
+user_id (INT FOREIGN KEY REFERENCES Users(user_id)) - References the user_id in the Users table (establishes a many-to-many relationship)
+company_id (INT FOREIGN KEY REFERENCES Companies(company_id)) - References the company_id in the Companies table (establishes a many-to-many relationship)
+employee_id (VARCHAR(255)) - User's unique employee ID within the company (allows multiple IDs for one user across companies)
+PRIMARY KEY (user_id, company_id) - Composite primary key to uniquely identify a user-company combination
+
+
+Employers: (New Table)
+Columns:
+employer_id (INT PRIMARY KEY) - Unique identifier for each employer (redundant with user_id but might be useful for clarity)
+user_id (INT FOREIGN KEY REFERENCES Users(user_id)) - References the user_id in the Users table (establishes a one-to-one relationship between a user marked as an employer and their user record)
+
+Invoices: (Updated)
+Columns:
+invoice_id (INT PRIMARY KEY) - Unique identifier for each invoice
+employee_id (INT FOREIGN KEY REFERENCES User_Companies(employee_id)) - References the employee_id in the User_Companies table for company-related invoices (One-to-Many)
+employer_id (INT FOREIGN KEY REFERENCES Employers(employer_id)) - References the employer_id for invoices not associated with a specific company (One-to-Many) - Optional field
+invoice_name (VARCHAR(255)) - Name of the invoice
+invoice_date (DATE) - Date of the invoice
+invoice_company (VARCHAR(255)) - Name of the company on the invoice (optional, might be redundant)
+
+Relationships:
+Users: A user can be an employer (through Employers table) and can belong to many companies (Many-to-Many) through the User_Companies table.
+Companies: A company can have many employees (users) (One-to-Many) through the User_Companies table.
+Employers: An employer is a user (One-to-One) with the Users table and can view all invoices for their employees (through employee_id in Invoices table).
+User_Companies:
+Connects Users and Companies with a many-to-many relationship.
+Stores the user's unique employee ID for that specific company.
+Invoices:
+An employee (user within a company) can have many invoices (One-to-Many) linked through the employee_id referencing the User_Companies table (company-related invoices).
+An employee (user) can also have separate invoices not pertaining to a company (One-to-Many) linked through the employer_id referencing the Employers table (optional field).
+Explanation:
+
+Introduced a separate Employers table to distinguish users designated as employers. This could be redundant with the Users table depending on your specific needs.
+Updated the Invoices table to include an optional employer_id field for invoices not associated with a specific company.
+The employer can view all invoices of their employees through the employee_id in the Invoices table. This assumes the employer knows which employees belong to them (potentially another table could manage this relationship).
+This structure allows for flexibility in handling company-related and personal invoices for employees. You can choose to include the employer_id field in Invoices or remove it depending on how you want to manage non-company invoices
