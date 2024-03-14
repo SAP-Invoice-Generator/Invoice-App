@@ -11,6 +11,8 @@ key = config("SUPERBASE_KEY")
 app = FastAPI()
 supabase : Client = create_client(url,key)
 
+
+
 @app.get ("/")
 def root():
     return {"Hare na gethu Vickey na MASSu"}
